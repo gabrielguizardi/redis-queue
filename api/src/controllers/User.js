@@ -9,19 +9,19 @@ module.exports = {
         phone
       } = req.body
 
-      redisClient.lrange('usersQueue', 0, -1, (err, reply) => {
+      redisClient.lrange('usersQueue', 0, -1, (err, ids) => {
         if (err) {
           throw new Error(err)
         }
 
         let index = 1
 
-        if (reply.length > 0) {
-          const lastKey = reply[reply.length - 1]
+        if (ids.length > 0) {
+          const lastKey = ids[ids.length - 1]
           index = Number(lastKey.split(':')[1]) + 1
         }
 
-        redisClient.rpush('usersQueue', `user:${index}`, (err, reply) => {
+        redisClient.rpush('usersQueue', `user:${index}`, (err) => {
           if (err) {
             throw new Error(err)
           }
@@ -51,17 +51,17 @@ module.exports = {
       let users = []
       let index = 0
 
-      redisClient.lrange('usersQueue', 0, -1, (err, keys) => {
+      redisClient.lrange('usersQueue', 0, -1, (err, ids) => {
         if (err) {
           throw new Error(err)
         }
 
-        if (keys.length === 0) {
+        if (ids.length === 0) {
           return res.json({ users: [] })
         }
 
-        keys.map((key) => {
-          redisClient.hgetall(key, (err, user) => {
+        ids.map((id) => {
+          redisClient.hgetall(id, (err, user) => {
             index++
 
             if (err) {
@@ -69,12 +69,12 @@ module.exports = {
             }
 
             temp_data = {
-              id: key,
+              id,
               data: user
             }
             users.push(temp_data)
 
-            if (index === keys.length) {
+            if (index === ids.length) {
               res.json({ users })
             }
           })
@@ -92,7 +92,7 @@ module.exports = {
           throw new Error(err)
         }
 
-        redisClient.hdel(id, ['name', 'email', 'phone'], (err, reply) => {
+        redisClient.hdel(id, ['name', 'email', 'phone'], (err) => {
           if (err) {
             throw new Error(err)
           }
