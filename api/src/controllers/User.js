@@ -3,15 +3,11 @@ const redisClient = require('../database')
 module.exports = {
   async create(req, res, next) {
     try {
-      const {
-        name,
-        email,
-        phone
-      } = req.body
+      const { name, email, phone } = req.body
 
       redisClient.lrange('usersQueue', 0, -1, (err, ids) => {
         if (err) {
-          throw new Error(err)
+          next(err)
         }
 
         let index = 1
@@ -23,7 +19,7 @@ module.exports = {
 
         redisClient.rpush('usersQueue', `user:${index}`, (err) => {
           if (err) {
-            throw new Error(err)
+            next(err)
           }
 
           redisClient.hmset(`user:${index}`, [
@@ -32,7 +28,7 @@ module.exports = {
             'phone', phone,
           ], (err) => {
             if (err) {
-              throw new Error(err)
+              next(err)
             }
 
             res.status(201).json({
@@ -53,11 +49,11 @@ module.exports = {
 
       redisClient.lrange('usersQueue', 0, -1, (err, ids) => {
         if (err) {
-          throw new Error(err)
+          next(err)
         }
 
         if (ids.length === 0) {
-          return res.json({ users: [] })
+          return res.json({ users })
         }
 
         ids.map((id) => {
@@ -65,14 +61,13 @@ module.exports = {
             index++
 
             if (err) {
-              throw new Error(err)
+              next(err)
             }
 
-            temp_data = {
+            users.push({
               id,
-              data: user
-            }
-            users.push(temp_data)
+              user
+            })
 
             if (index === ids.length) {
               res.json({ users })
@@ -89,12 +84,12 @@ module.exports = {
     try {
       redisClient.lpop('usersQueue', (err, id) => {
         if (err) {
-          throw new Error(err)
+          next(err)
         }
 
         redisClient.hdel(id, ['name', 'email', 'phone'], (err) => {
           if (err) {
-            throw new Error(err)
+            next(err)
           }
 
           res.json({

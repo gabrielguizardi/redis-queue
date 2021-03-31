@@ -22,37 +22,13 @@ const H2 = styled.h2`
   z-index: 2;
 `;
 
-const Image = styled.img`
-  width: 20vw;
-  z-index: 1;
-  filter: grayscale(0%);
-`;
-
 const Subtitle = styled.h1`
-  background-color: #FFF;
-  text-transform: uppercase;
-  padding: 20px;
-  border-radius: 100px;
-  position: absolute;
-  bottom: 100px;
-  left: 0px
   font-family: arial;
-  font-size: 2.5vw;
+  font-size: 2.5em;
   text-align: center;
-  color: #FA1E44;
 `;
 
-const Input = styled.input`
-  width: 100%;
-  background-color: #F5F5F5;
-  color: #242424;
-  font-weight: 600;
-  padding: 10px;
-  border-radius: 5px;
-`;
-
-const Button = styled.input`
-  width: 30%;
+const Button = styled.button`
   background-color: #FFF;
   border:1px solid #FA1E44;
   font-weight: 600;
@@ -67,24 +43,27 @@ const Button = styled.input`
   }
 `;
 
-const ImageBackground = styled.div`
-  
+const ExcludeButton = styled.button`
+  background-color: #E76D6F;
+  font-weight: 600;
+  color: #FFFFFF;
+  padding: 25px;
+  border-radius: 90px;
+  cursor: pointer;
+  transition: background 1s;
   width: 100%;
-  flex: 1;
-  background-image: url(${'../../images/cinema.png'});
-  background-color: #FA1E44;
-  &:before {
-    filter: grayscale(60%);
+  display: flex;
+  justify-content: center;
+  &:hover {
+    background-color: #FA1E44;
+    color: #FFF
   }
-  background-size: cover;
 `;
 
 export {
   H1,
   H2,
   Subtitle,
-  Input,
   Button,
-  ImageBackground,
-  Image
+  ExcludeButton
 }
