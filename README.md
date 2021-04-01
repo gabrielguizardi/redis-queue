@@ -1,5 +1,8 @@
-# Trabalho de banco de dados noSQL
+# Redis ticket queue
 
-## Fazer gerenciamento de fila utilizando o redis
-
-### redis-queues
+### Integrantes
+*  https://github.com/MileneCruz
+*  https://github.com/fhamas3
+*  https://github.com/iagomedeiros
+*  https://github.com/JonathanTsen
+*  https://github.com/joseadami
