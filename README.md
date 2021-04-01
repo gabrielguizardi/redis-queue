@@ -1,4 +1,4 @@
-# Trabalho des banco de dados noSQL
+# Trabalho de banco de dados noSQL
 
 ## Fazer gerenciamento de fila utilizando o redis
 
